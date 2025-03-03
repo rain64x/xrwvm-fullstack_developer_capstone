@@ -24,17 +24,16 @@ def get_request(endpoint, **kwargs):
     request_url = backend_url+endpoint+"?"+params
 
     print("GET from {} ".format(request_url))
-from requests.exceptions import RequestException
 
-try:
-    # Call get method of requests library with URL and parameters
-    response = requests.get(request_url)
-    response.raise_for_status()  # Raises HTTPError for bad responses
-    return response.json()
-except RequestException as e:
-    # If any request-related error occurs
-    print(f"Network exception occurred: {e}")
-    return None
+    try:
+        # Call get method of requests library with URL and parameters
+        response = requests.get(request_url)
+        response.raise_for_status()  # Raises HTTPError for bad responses
+        return response.json()
+    except RequestException as e:
+        # If any request-related error occurs
+        print(f"Network exception occurred: {e}")
+        return None
 
 
 # def analyze_review_sentiments(text):
