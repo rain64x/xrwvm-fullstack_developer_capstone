@@ -2,6 +2,7 @@
 import requests
 import os
 from dotenv import load_dotenv
+from requests.exceptions import RequestException
 
 load_dotenv()
 
@@ -23,13 +24,18 @@ def get_request(endpoint, **kwargs):
     request_url = backend_url+endpoint+"?"+params
 
     print("GET from {} ".format(request_url))
-    try:
-        # Call get method of requests library with URL and parameters
-        response = requests.get(request_url)
-        return response.json()
-    except:
-        # If any error occurs
-        print("Network exception occurred")
+from requests.exceptions import RequestException
+
+try:
+    # Call get method of requests library with URL and parameters
+    response = requests.get(request_url)
+    response.raise_for_status()  # Raises HTTPError for bad responses
+    return response.json()
+except RequestException as e:
+    # If any request-related error occurs
+    print(f"Network exception occurred: {e}")
+    return None
+
 
 # def analyze_review_sentiments(text):
 # request_url = sentiment_analyzer_url+"analyze/"+text
